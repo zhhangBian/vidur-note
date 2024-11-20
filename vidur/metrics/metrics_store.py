@@ -48,7 +48,6 @@ TIME_STR_MS = "Time (ms)"
 
 
 class MetricsStore:
-
     def __init__(self, simulation_config: SimulationConfig) -> None:
         self._simulation_config = simulation_config
         self._config = self._simulation_config.metrics_config
@@ -176,9 +175,9 @@ class MetricsStore:
             )
 
         self._cpu_operation_metrics: Dict[CpuOperationMetrics, CDFSketch] = {}
-        self._cpu_operation_metrics_per_batch: Dict[CpuOperationMetrics, DataSeries] = (
-            {}
-        )
+        self._cpu_operation_metrics_per_batch: Dict[
+            CpuOperationMetrics, DataSeries
+        ] = {}
         for metric_name in CpuOperationMetrics:
             self._cpu_operation_metrics[metric_name] = CDFSketch(
                 metric_name.value,

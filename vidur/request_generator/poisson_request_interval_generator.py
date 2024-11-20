@@ -8,7 +8,6 @@ from vidur.request_generator.base_request_interval_generator import (
 
 
 class PoissonRequestIntervalGenerator(BaseRequestIntervalGenerator):
-
     def __init__(self, config: PoissonRequestIntervalGeneratorConfig):
         super().__init__(config)
 

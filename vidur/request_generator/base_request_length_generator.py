@@ -5,7 +5,6 @@ from vidur.config import BaseRequestLengthGeneratorConfig
 
 
 class BaseRequestLengthGenerator(ABC):
-
     def __init__(self, config: BaseRequestLengthGeneratorConfig):
         self.config = config
 

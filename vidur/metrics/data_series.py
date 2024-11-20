@@ -11,6 +11,7 @@ from vidur.logger import init_logger
 logger = init_logger(__name__)
 
 
+# 处理数据集合的工具，可进行可视化
 class DataSeries:
     def __init__(
         self,
@@ -21,6 +22,7 @@ class DataSeries:
         save_plots: bool = True,
     ) -> None:
         # metrics are a data series of two-dimensional (x, y) datapoints
+        # 用于存储所有的 (x, y) 数据点
         self._data_series = []
         # column names of x, y datatpoints for data collection
         self._x_name = x_name
@@ -34,6 +36,7 @@ class DataSeries:
         self._save_table_to_wandb = save_table_to_wandb
         self._save_plots = save_plots
 
+    # 对数据进行聚合，计算每个 x 值对应的 y 值的平均数，并按 x 值排序
     def consolidate(
         self,
     ):
@@ -68,6 +71,7 @@ class DataSeries:
 
     # add a new x, y datapoint as an incremental (delta) update to
     # recently collected y datapoint
+    # 对最近收集的 y 数据点进行增量更新
     def put_delta(self, data_x: float, data_y_delta: float) -> None:
         last_data_y = self._peek_y()
         data_y = last_data_y + data_y_delta
@@ -154,7 +158,6 @@ class DataSeries:
         start_time: float = 0,
         y_cumsum: bool = True,
     ) -> None:
-
         if len(self._data_series) == 0:
             return
 

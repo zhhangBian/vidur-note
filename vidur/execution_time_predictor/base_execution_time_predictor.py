@@ -9,6 +9,7 @@ from vidur.config import (
 from vidur.entities import Batch, ExecutionTime
 
 
+#
 class BaseExecutionTimePredictor(ABC):
     def __init__(
         self,
@@ -44,6 +45,7 @@ class BaseExecutionTimePredictor(ABC):
                 self._get_tensor_parallel_communication_time(batch)
             )
 
+        # 返回一个对
         return ExecutionTime(
             self._num_layers_per_pipeline_stage,
             self._get_attention_rope_execution_time(batch),

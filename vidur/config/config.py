@@ -302,7 +302,6 @@ class LightllmSchedulerConfig(BaseReplicaSchedulerConfig):
 
 @dataclass
 class OrcaSchedulerConfig(BaseReplicaSchedulerConfig):
-
     @staticmethod
     def get_type():
         return ReplicaSchedulerType.ORCA
@@ -310,7 +309,6 @@ class OrcaSchedulerConfig(BaseReplicaSchedulerConfig):
 
 @dataclass
 class FasterTransformerSchedulerConfig(BaseReplicaSchedulerConfig):
-
     @staticmethod
     def get_type():
         return ReplicaSchedulerType.FASTER_TRANSFORMER
@@ -625,6 +623,7 @@ class ClusterConfig:
 
 @dataclass
 class SimulationConfig(ABC):
+    # field函数用于定义类的属性，提供相应的说明和提示
     seed: int = field(
         default=42,
         metadata={"help": "Seed for the random number generator."},

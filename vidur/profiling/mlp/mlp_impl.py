@@ -17,7 +17,6 @@ REUSE_MEMORY = True
 
 
 class CausalSelfAttention(torch.nn.Module):
-
     def __init__(self, config: ModelConfig, world_size: int):
         super().__init__()
         assert config.embedding_dim % config.num_q_heads == 0
@@ -122,7 +121,6 @@ class MLP(torch.nn.Module):
 
 
 class GPTBlock(torch.nn.Module):
-
     def __init__(self, config: ModelConfig, world_size: int):
         super().__init__()
 

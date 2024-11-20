@@ -8,7 +8,6 @@ from vidur.request_generator.base_request_length_generator import (
 
 
 class UniformRequestLengthGenerator(BaseRequestLengthGenerator):
-
     def get_next_num_tokens(self) -> Tuple[float, float]:
         total_tokens = random.uniform(
             self.config.min_tokens,

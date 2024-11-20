@@ -27,6 +27,7 @@ from vidur.logger import init_logger
 logger = init_logger(__name__)
 
 
+# 使用MLP进行简单的训练，寻找到最优的配置
 class SklearnExecutionTimePredictor(BaseExecutionTimePredictor):
     def __init__(
         self,

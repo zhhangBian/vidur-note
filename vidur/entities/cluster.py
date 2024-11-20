@@ -8,6 +8,7 @@ from vidur.logger import init_logger
 logger = init_logger(__name__)
 
 
+# 用于作为集群的抽象
 class Cluster(BaseEntity):
     def __init__(
         self,

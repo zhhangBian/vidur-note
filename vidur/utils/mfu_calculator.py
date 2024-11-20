@@ -4,7 +4,6 @@ from vidur.utils.param_counter import ParamCounter
 
 
 class MFUCalculator:
-
     def __init__(self, replica_config: ReplicaConfig):
         param_counter = ParamCounter(replica_config)
         self._num_params_per_device = param_counter.get_num_parameters_per_device()
