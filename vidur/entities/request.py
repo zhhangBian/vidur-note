@@ -34,16 +34,27 @@ class Request(BaseEntity):
         num_processed_tokens: int = 0,
     ):
         self._id = Request.generate_id()
+        # 请求到达时间
         self._arrived_at = arrived_at
+        
+        # 预填充token数量
+        # 模型并行处理输入的token
         self._num_prefill_tokens = num_prefill_tokens
+        # 解码token数量
+        # 在推理过程的解码阶段，模型逐个生成下一个token。
         self._num_decode_tokens = num_decode_tokens
+        # 已处理token数量
+        # num_prefill_tokens + num_decode_tokens
         self._num_processed_tokens = num_processed_tokens
 
+        # 调度时间
         self._scheduled_at = 0
+        # 处理时间
         self._execution_time = 0
         self._model_execution_time = 0
         self._scheduling_delay = 0
         self._preempted_time = 0
+        # 完成时间
         self._completed_at = 0
         self._prefill_completed_at = 0
         self._latest_stage_scheduled_at = 0
@@ -219,6 +230,7 @@ class Request(BaseEntity):
         self._scheduling_delay = time - self._arrived_at
         self._scheduled = True
 
+    # 对request的完成进度进行更新
     def on_batch_end(
         self,
         time: float,
@@ -229,6 +241,7 @@ class Request(BaseEntity):
 
         assert self._num_processed_tokens <= self.total_tokens
 
+        # 如果完成了就更新该request的完成进度
         if self._num_processed_tokens == self._num_prefill_tokens:
             self._is_prefill_complete = True
             # we get one decode token when the prefill processing completes
@@ -246,23 +259,28 @@ class Request(BaseEntity):
             self._completed = True
             logger.debug(f"Request {self._id} completed at {self._completed_at}")
 
+    # 在请求被调度时被调用，更新请求的调度时间和调度延迟
     def on_batch_stage_schedule(
         self,
         time: float,
     ) -> None:
+        # 更新被调度时间
         self._latest_stage_scheduled_at = time
         if self._latest_stage_completed_at == 0:
             self._preempted_time = 0
         else:
             self._preempted_time += time - self._latest_stage_completed_at
+        # 表示当前阶段没有被抢占
         self._preempted = False
 
+    # 在请求的一个阶段完成时被调用
     def on_batch_stage_end(
         self,
         time: float,
         execution_time: float,
         model_execution_time: float,
     ) -> None:
+        # 增加执行实现
         self._execution_time += execution_time
         self._model_execution_time += model_execution_time
         self._latest_stage_completed_at = time

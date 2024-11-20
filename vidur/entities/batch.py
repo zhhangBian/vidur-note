@@ -26,10 +26,13 @@ def check_completed(func):
     return wrapper
 
 
+# 用于封装一组请求的集合，请求被分配给特定的replica执行
+# 封装了与一批请求相关的数据和行为，包括请求的调度、执行和完成状态
 class Batch(BaseEntity):
     def __init__(
         self,
         replica_id: int,
+        # 封装了当下待处理的请求集合
         requests: List[Request],
         num_tokens: List[int],
     ) -> None:
@@ -37,8 +40,10 @@ class Batch(BaseEntity):
         self._replica_id = replica_id
 
         self._requests = requests
+        # 每个请request中包含的token数量
         self._num_tokens = num_tokens
         self._total_num_tokens = sum(num_tokens)
+        # 预填充token列表：已经进行过预处理的token
         self._num_prefill_tokens = sum(
             [
                 (t if not r.is_prefill_complete else 0)
@@ -111,6 +116,7 @@ class Batch(BaseEntity):
     def all_requests_completed(self) -> bool:
         return all([request.completed for request in self._requests])
 
+    # 对request进行调度，更新调度时间并通知每个请求
     def on_schedule(
         self,
         time: float,
@@ -121,6 +127,7 @@ class Batch(BaseEntity):
         for request in self._requests:
             request.on_batch_schedule(time)
 
+    # 在这批请求处理结束时被调用，更新完成时间和处理每个请求的结束逻辑。
     def on_batch_end(self, time: float):
         self._completed = True
         self._completed_at = time
@@ -128,10 +135,12 @@ class Batch(BaseEntity):
         for request, num_tokens in zip(self._requests, self._num_tokens):
             request.on_batch_end(time, num_tokens)
 
+    # 被抢占的request集合
     @property
     def preempted_requests(self) -> List[Request]:
         return [request for request in self._requests if request.preempted]
-
+    
+    # 完成的request集合
     @property
     def completed_requests(self) -> List[Request]:
         return [request for request in self._requests if request.completed]

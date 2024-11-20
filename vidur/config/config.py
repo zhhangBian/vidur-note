@@ -326,6 +326,7 @@ class SarathiSchedulerConfig(BaseReplicaSchedulerConfig):
         return ReplicaSchedulerType.SARATHI
 
 
+# 具体的执行策略的参数
 @dataclass
 class MetricsConfig:
     """Metric configuration."""
@@ -490,18 +491,22 @@ class LORGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
 
 @dataclass
 class BaseExecutionTimePredictorConfig(BasePolyConfig):
+    # 记录了模型对应的MLP的相关参数
     compute_input_file: str = field(
         default="./data/profiling/compute/{DEVICE}/{MODEL}/mlp.csv",
         metadata={"help": "Path to the compute input file."},
     )
+    # 记录了模型对应的Attention的相关参数
     attention_input_file: str = field(
         default="./data/profiling/compute/{DEVICE}/{MODEL}/attention.csv",
         metadata={"help": "Path to the attention input file."},
     )
+    # reduce通信相关的数据
     all_reduce_input_file: str = field(
         default="./data/profiling/network/{NETWORK_DEVICE}/all_reduce.csv",
         metadata={"help": "Path to the all reduce input file."},
     )
+    # send-recv通信相关的数据
     send_recv_input_file: str = field(
         default="./data/profiling/network/{NETWORK_DEVICE}/send_recv.csv",
         metadata={"help": "Path to the send recv input file."},
@@ -644,6 +649,7 @@ class SimulationConfig(ABC):
         default_factory=SyntheticRequestGeneratorConfig,
         metadata={"help": "Request generator config."},
     )
+    # 执行时间估计
     execution_time_predictor_config: BaseExecutionTimePredictorConfig = field(
         default_factory=RandomForrestExecutionTimePredictorConfig,
         metadata={"help": "Execution time predictor config."},

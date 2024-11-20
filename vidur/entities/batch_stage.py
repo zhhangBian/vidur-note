@@ -17,6 +17,7 @@ def check_scheduled(func):
     return wrapper
 
 
+# 用于表示一批request在**特定流水线阶段**的执行情况
 class BatchStage(BaseEntity):
     def __init__(
         self,
@@ -34,6 +35,7 @@ class BatchStage(BaseEntity):
         self._num_tokens = num_tokens
         self._batch_id = batch_id
         self._replica_id = replica_id
+        # 当前处于的执行流水线阶段
         self._pipeline_stage = pipeline_stage
         self._execution_time = execution_time
         self._model_execution_time = model_execution_time
@@ -80,6 +82,7 @@ class BatchStage(BaseEntity):
     def size(self) -> int:
         return len(self._requests)
 
+    # 更新这批请求的调度时间，并通知每个请求
     def on_schedule(
         self,
         time: float,
@@ -90,6 +93,7 @@ class BatchStage(BaseEntity):
         for request in self._requests:
             request.on_batch_stage_schedule(time)
 
+    # 在这批请求的当前流水线阶段结束时被调用，并通知每个请求
     def on_stage_end(
         self,
         time: float,

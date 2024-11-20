@@ -23,9 +23,11 @@ class Cluster(BaseEntity):
         self._output_dir = metrics_config.output_dir
 
         # Init replica object handles
+        # 集群会含有多个replica
         self._replicas = {}
 
         for _ in range(self._config.num_replicas):
+            # 在Cluster的阶段进行replica的初始化
             replica = Replica(self._config.replica_config, generator_config)
             self._replicas[replica.id] = replica
 

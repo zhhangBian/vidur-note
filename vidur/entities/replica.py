@@ -7,6 +7,7 @@ from vidur.logger import init_logger
 logger = init_logger(__name__)
 
 
+# 对分布式训练实体的抽象
 class Replica(BaseEntity):
     def __init__(
         self,

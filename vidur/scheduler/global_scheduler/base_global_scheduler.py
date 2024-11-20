@@ -16,6 +16,7 @@ class BaseGlobalScheduler(ABC):
 
         self._num_replicas = len(self._replicas)
 
+        # 执行时间预测其
         execution_time_predictor = ExecutionTimePredictorRegistry.get(
             config.execution_time_predictor_config.get_type(),
             predictor_config=config.execution_time_predictor_config,
@@ -23,6 +24,7 @@ class BaseGlobalScheduler(ABC):
             replica_scheduler_config=config.cluster_config.replica_scheduler_config,
             metrics_config=config.metrics_config,
         )
+        # 更低一层的调度器：replica层级上的内存和批调度策略
         self._replica_schedulers = {
             replica_id: ReplicaSchedulerRegistry.get(
                 config.cluster_config.replica_scheduler_config.get_type(),
