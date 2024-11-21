@@ -26,6 +26,7 @@ WARMUP_STEPS = 2
 ACTIVE_STEPS = 5
 
 
+# 对attention的封装
 class AttentionWrapper:
     def __init__(
         self,

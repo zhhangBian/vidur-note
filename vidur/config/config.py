@@ -433,6 +433,7 @@ class ReplicaConfig:
         default=0.1,
         metadata={"help": "Memory margin fraction."},
     )
+    # 在pipeline中，模型被拆分为多少个阶段运行
     num_pipeline_stages: int = field(
         default=1,
         metadata={"help": "Number of pipeline stages."},

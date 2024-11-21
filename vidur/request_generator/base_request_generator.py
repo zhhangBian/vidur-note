@@ -6,6 +6,8 @@ from vidur.config import BaseRequestGeneratorConfig
 from vidur.entities import Request
 
 
+# 产生一系列的request
+# 由两个实现子类
 class BaseRequestGenerator(ABC):
     def __init__(self, config: BaseRequestGeneratorConfig):
         self.config = config

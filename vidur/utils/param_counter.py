@@ -3,6 +3,8 @@ from math import ceil
 from vidur.config import ReplicaConfig
 
 
+# 对于replica的参数计算
+# 依靠replica的config进行计算
 class ParamCounter:
     # 依托Replia进行初始化，与每个replia紧密相关，计算每个replia的相关参数
     def __init__(self, replica_config: ReplicaConfig) -> None:
@@ -91,6 +93,7 @@ class ParamCounter:
 
         return num_parameters
 
+    # 得到每个设备的参数总量：层数*每层的平均参数量
     def get_num_parameters_per_device(self) -> int:
         num_parameters_per_layer = self.get_num_parameters_per_layer()
         return num_parameters_per_layer * self._num_layers_per_pipeline_stage

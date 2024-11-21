@@ -12,6 +12,7 @@ class RequestGeneratorRegistry(BaseRegistry):
     pass
 
 
+# 模拟生成人工请求
 RequestGeneratorRegistry.register(
     RequestGeneratorType.SYNTHETIC, SyntheticRequestGenerator
 )

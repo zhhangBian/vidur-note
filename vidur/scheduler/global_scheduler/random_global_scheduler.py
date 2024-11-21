@@ -5,6 +5,7 @@ from vidur.entities import Request
 from vidur.scheduler.global_scheduler.base_global_scheduler import BaseGlobalScheduler
 
 
+# 将request随机分发给一个replica
 class RandomGlobalScheduler(BaseGlobalScheduler):
     def schedule(self) -> List[Tuple[int, Request]]:
         self.sort_requests()

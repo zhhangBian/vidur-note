@@ -66,6 +66,7 @@ class Replica(BaseEntity):
     def vocab_size(self) -> int:
         return self._model_config.vocab_size
 
+    # 在pipeline中，模型被拆分为多少个阶段运行
     @property
     def num_pipeline_stages(self) -> int:
         return self._replica_config.num_pipeline_stages
