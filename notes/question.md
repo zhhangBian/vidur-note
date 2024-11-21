@@ -61,9 +61,18 @@ INFO 11-20 14:51:04 simulator.py:95] Chrome event trace written
 对于Replica这个层次的抽象还存在着一些疑惑，目前的认识是：
 
 - 在LLM的训练模拟中，广泛采用了分布式训练，会有多个训练实体，都遵循着相同的一套数据
-- 
+- 在对性能的估计中，MLP的计算是对所有token的遍历，Attention的计算则是遍历了所有的request
 
+#### 3
 
+在对Profiling Communication Operators的模拟参数中，只对`all_reduce, send_recv`两类算子提供了模拟参数（data/compute），没有对all_gather阶段进行模拟。
 
+这是不是因为all_gather阶段的张量并行操作默认执行了，不同策略之间的差异较小，就没有对参数进行引入
 
+#### 4
 
+代码中的e2e，即端到端指的是什么
+
+#### 5
+
+`sklearn_execution_time_predictor`中有一些时间是直接使用参数量进行直接计算的,依据是什么,想要学习的话可以看哪些论文呀

@@ -16,7 +16,7 @@ class BaseGlobalScheduler(ABC):
 
         self._num_replicas = len(self._replicas)
 
-        # 执行时间预测其
+        # 执行时间预测
         execution_time_predictor = ExecutionTimePredictorRegistry.get(
             config.execution_time_predictor_config.get_type(),
             predictor_config=config.execution_time_predictor_config,

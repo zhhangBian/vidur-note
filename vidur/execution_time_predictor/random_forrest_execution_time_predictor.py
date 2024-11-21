@@ -29,6 +29,7 @@ class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
             metrics_config=metrics_config,
         )
 
+    
     def _get_grid_search_params(self):
         return {
             "n_estimators": self._config.num_estimators,

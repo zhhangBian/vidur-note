@@ -13,6 +13,7 @@ from vidur.execution_time_predictor.sklearn_execution_time_predictor import (
 )
 
 
+# 使用线性回归的多项式方式进行时间预测
 class LinearRegressionExecutionTimePredictor(SklearnExecutionTimePredictor):
     def __init__(
         self,
@@ -38,4 +39,7 @@ class LinearRegressionExecutionTimePredictor(SklearnExecutionTimePredictor):
         }
 
     def _get_estimator(self):
+        # 创建一个包含多步操作的管道
+        # 1. 将输入特征转换为多项式特征
+        # 2. 在多项式特征空间中找到最佳拟合线
         return make_pipeline(PolynomialFeatures(), LinearRegression())
