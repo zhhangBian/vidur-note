@@ -44,8 +44,9 @@ class AttentionWrapper:
         self._parallel_config = parallel_config
         self._dtype = dtype
         self._device = torch.device("cuda")
-
+        # 最大模型长度
         self._max_model_len = max_model_len
+
         self._n_worker_q_heads = self._model_config.get_num_q_heads(
             self._parallel_config
         )
@@ -115,17 +116,21 @@ class AttentionWrapper:
             seq_metadata_list.append(seq_metadata)
         return seq_metadata_list, query, key, value, self.kv_cache
 
+    # 之星实际的吸能分析
     @torch.inference_mode()
     def profile(
         self,
         attention_input: AttentionInput,
     ):
         # batch size is always 1 for prefill and can be different for decode
+        # 判断attention输入是否有效
         assert attention_input.is_valid(self._max_model_len)
 
+        # 获取输入张量
         seq_metadata_list, query, key, value, kv_cache = self._get_input_tensors(
             attention_input,
         )
+        # 执行前向传播
         get_attention_wrapper().begin_forward(seq_metadata_list)
 
         for _ in range(WARMUP_STEPS):
