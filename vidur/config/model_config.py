@@ -212,3 +212,16 @@ class Qwen72BModelConfig(QwenModelConfig):
     @staticmethod
     def get_name():
         return "Qwen/Qwen-72B"
+
+@dataclass
+class Mistral7BModelConfig(QwenModelConfig):
+    num_layers: int = 32
+    num_q_heads: int = 32
+    num_kv_heads: int = 8
+    embedding_dim: int = 4096
+    mlp_hidden_dim: int = 14336
+    rope_theta: Optional[float] = 1000000.0
+
+    @staticmethod
+    def get_name():
+        return "mistralai/Mistral-7B-Instruct-v0.3"
