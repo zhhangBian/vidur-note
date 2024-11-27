@@ -32,20 +32,34 @@ For network profiling, the network configuration of the node matters. So, we hav
 
 ## Adding a new model
 
-We need actual GPUs to get profiling data for a new model. Once the profiling is done, simulations can be run on CPUs only.
+> 如何添加一个新的model进行模拟
+
+We need actual GPUs to **get profiling data for a new model**. 
+
+Once the profiling is done, simulations can be run on CPUs only.
 
 1. Clone the [`sarathi-serve`](https://github.com/microsoft/sarathi-serve) GitHub repo.
     1. Checkout branch [`vidur`](https://github.com/microsoft/sarathi-serve/tree/vidur)
     1. Follow its README to install it.
     1. Let us assume that the Python virtual environment was created in `sarathi-serve/env`.
+    
 1. Now clone this repo [`vidur`](https://github.com/microsoft/vidur) but keep the `sarathi-serve/env` virtual environment activated.
+
 1. Add a YAML model config for the new model in `data/model_configs`.
     - Use the model's HuggingFace model id for the file name eg. `data/model_configs/meta-llama/Llama-2-70b-hf.yml`.
+    
+      mistralai/Mistral-7B-Instruct-v0.3
+    
     - Refer HuggingFace `config.json` for the model eg. <https://huggingface.co/meta-llama/Llama-2-70b-hf/blob/main/config.json>.
+    
     - Ensure that correct parameters are set in the YAML file so that the reference transformer model [GPTModel](vidur/profiling/mlp/mlp_impl.py) closely resembles the new model.
+    
     - We use this reference model to profile only the MLP operations of all the models so the attention operations are no-op'ed here.
+    
 1. Run the following command to install the simulator in the virtual environment: `python -m pip install -e .` from the `vidur/` directory.
+
 1. For compute profiling (mlp and attention), 1 GPU is enough even for tensor parallel degrees greater than 1. So `num_gpus` set to 1 is sufficient albeit slower for profiling.
+
 1. Now we need to do the MLP profiling:
 
     ```bash
@@ -56,6 +70,7 @@ We need actual GPUs to get profiling data for a new model. Once the profiling is
 
     - Run `python vidur/profiling/mlp/main.py --help` for more options.
     - Copy the CSV file from `profiling_outputs/mlp/<timestamp>/codellama/CodeLlama-34b-Instruct-hf/mlp.csv` to `data/profiling/compute/a100/codellama/CodeLlama-34b-Instruct-hf/mlp.csv`.
+    
 1. Now we need to do the attention profiling:
 
     ```bash
