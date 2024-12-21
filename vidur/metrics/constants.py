@@ -30,24 +30,38 @@ class CpuOperationMetrics(enum.Enum):
     RAY_COMM_TIME = "ray_comm_time"
 
 
+# 各种请求的时间枚举
 class RequestMetricsTimeDistributions(enum.Enum):
+    # 请求的端到端（End-to-End）时间，即从请求开始到结束的总时间
     REQUEST_E2E_TIME = "request_e2e_time"
+    # 标准化的请求端到端时间，可能用于消除不同请求间的差异，以便进行比较
     REQUEST_E2E_TIME_NORMALIZED = "request_e2e_time_normalized"
+    # 请求的执行时间，即实际处理请求所花费的时间
     REQUEST_EXECUTION_TIME = "request_execution_time"
+    # 标准化的请求执行时间，用于比较不同请求的执行效率
     REQUEST_EXECUTION_TIME_NORMALIZED = "request_execution_time_normalized"
+    # 模型执行时间，如果请求涉及机器学习模型，这可能指的是模型推理所花费的时间
     REQUEST_MODEL_EXECUTION_TIME = "request_model_execution_time"
+    # 标准化的模型执行时间，用于比较不同模型或请求的推理效率
     REQUEST_MODEL_EXECUTION_TIME_NORMALIZED = "request_model_execution_time_normalized"
+    # 请求的抢占时间，可能指的是高优先级任务抢占当前任务所导致的时间损失
     REQUEST_PREEMPTION_TIME = "request_preemption_time"
+    # 请求的调度延迟，即请求提交到开始执行之间的等待时间
     REQUEST_SCHEDULING_DELAY = "request_scheduling_delay"
+    # 标准化的请求执行时间加上抢占时间
     REQUEST_EXECUTION_PLUS_PREEMPTION_TIME = "request_execution_plus_preemption_time"
+    # 预填充的端到端时间，可能指的是在请求处理前，为了优化性能而进行的预处理步骤所花费的时间
     REQUEST_EXECUTION_PLUS_PREEMPTION_TIME_NORMALIZED = (
         "request_execution_plus_preemption_time_normalized"
     )
     PREFILL_TIME_E2E = "prefill_e2e_time"
+    # 预填充的执行时间加上抢占时间
     PREFILL_TIME_EXECUTION_PLUS_PREEMPTION = "prefill_time_execution_plus_preemption"
+    # 标准化的预填充执行时间加上抢占时间
     PREFILL_TIME_EXECUTION_PLUS_PREEMPTION_NORMALIZED = (
         "prefill_time_execution_plus_preemption_normalized"
     )
+    # 解码时间加上抢占时间的标准化值，可能用于衡量解码请求（如视频流解码）的性能
     DECODE_TIME_EXECUTION_PLUS_PREEMPTION_NORMALIZED = (
         "decode_time_execution_plus_preemption_normalized"
     )

@@ -1,6 +1,7 @@
 from vidur.entities.base_entity import BaseEntity
 
 
+# 对时间的整体抽象，包括了推理过程中的各个阶段
 class ExecutionTime(BaseEntity):
     def __init__(
         self,

@@ -23,22 +23,28 @@ class Simulator:
         self._time_limit = self._config.time_limit
         if not self._time_limit:
             self._time_limit = float("inf")
-
+        # 当前待处理的任务集合
         self._event_queue = []
 
+        # 一般的trace
         self._event_trace = []
+        # 特殊形式的trace，可进行可视化
         self._event_chrome_trace = []
 
+        # 计算集群的抽象
         self._cluster = Cluster(
             self._config.cluster_config,
             self._config.metrics_config,
             self._config.request_generator_config,
         )
+        # 存储
         self._metric_store = MetricsStore(self._config)
+        # 请求的创建函数
         self._request_generator = RequestGeneratorRegistry.get(
             self._config.request_generator_config.get_type(),
             self._config.request_generator_config,
         )
+        # 全局的调度函数
         self._scheduler = GlobalSchedulerRegistry.get(
             self._config.cluster_config.global_scheduler_config.get_type(),
             self._config,
@@ -46,6 +52,7 @@ class Simulator:
         )
 
         self._init_event_queue()
+        # 注册一个完成函数，表示结束仿真时退出代码
         atexit.register(self._write_output)
 
     @property
@@ -61,7 +68,9 @@ class Simulator:
             f"Starting simulation with cluster: {self._cluster} and {len(self._event_queue)} requests"
         )
 
+        # 只要队列不空且整体仿真不终止，就一直执行
         while self._event_queue and not self._terminate:
+            # 从队列中取出最小的元素
             _, event = heapq.heappop(self._event_queue)
             self._set_time(event._time)
             new_events = event.handle_event(self._scheduler, self._metric_store)
@@ -93,19 +102,23 @@ class Simulator:
             self._write_chrome_trace()
             logger.info("Chrome event trace written")
 
+    # 添加单个任务
     def _add_event(self, event: BaseEvent) -> None:
         heapq.heappush(self._event_queue, (event._priority_number, event))
 
+    # 添加一个队列的任务
     def _add_events(self, events: List[BaseEvent]) -> None:
         for event in events:
             self._add_event(event)
 
+    # 初始化exent序列
     def _init_event_queue(self) -> None:
         requests = self._request_generator.generate()
 
         for request in requests:
             self._add_event(RequestArrivalEvent(request.arrived_at, request))
 
+    # 设定仿真的时间
     def _set_time(self, time: float) -> None:
         self._time = time
         if self._time > self._time_limit:
@@ -114,6 +127,7 @@ class Simulator:
             )
             self._terminate = True
 
+    # 将仿真的trace保留到文件
     def _write_event_trace(self) -> None:
         trace_file = f"{self._config.metrics_config.output_dir}/event_trace.json"
         with open(trace_file, "w") as f:

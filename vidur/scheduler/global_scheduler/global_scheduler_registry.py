@@ -14,7 +14,7 @@ class GlobalSchedulerRegistry(BaseRegistry):
     def get_key_from_str(cls, key_str: str) -> GlobalSchedulerType:
         return GlobalSchedulerType.from_str(key_str)
 
-
+# 注册了多种调度方法
 GlobalSchedulerRegistry.register(GlobalSchedulerType.RANDOM, RandomGlobalScheduler)
 GlobalSchedulerRegistry.register(
     GlobalSchedulerType.ROUND_ROBIN, RoundRobinGlobalScheduler

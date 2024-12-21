@@ -13,8 +13,8 @@ from vidur.types import RequestIntervalGeneratorType
 from vidur.utils.random import set_seeds
 
 
+# 模拟生成人工请求
 class SyntheticRequestGenerator(BaseRequestGenerator):
-
     def __init__(self, config: SyntheticRequestGeneratorConfig):
         super().__init__(config)
 

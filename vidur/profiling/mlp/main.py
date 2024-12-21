@@ -138,6 +138,7 @@ def profile_model(
 
 def main():
     args = parse_args()
+    print(f"modeels is: {args.models}")
     yaml.dump(vars(args), open(f"{args.output_dir}/config.yaml", "w"))
 
     num_tokens_to_profile = get_num_tokens_to_profile(args.max_tokens)

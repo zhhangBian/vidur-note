@@ -11,6 +11,8 @@ from vidur.execution_time_predictor.sklearn_execution_time_predictor import (
 )
 
 
+# 文章中提到了由于Cuda并行执行等因素，传统的多项式时间模拟有限
+# 使用RandomForest模拟反而可以取得不错的效果
 class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
     def __init__(
         self,
@@ -27,6 +29,7 @@ class RandomForrestExecutionTimePredictor(SklearnExecutionTimePredictor):
             metrics_config=metrics_config,
         )
 
+    
     def _get_grid_search_params(self):
         return {
             "n_estimators": self._config.num_estimators,

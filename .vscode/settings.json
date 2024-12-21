@@ -3,5 +3,6 @@
         "INTERNLM",
         "QWEN",
         "vidur"
-    ]
+    ],
+    "marscode.chatLanguage": "cn"
 }

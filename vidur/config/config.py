@@ -302,7 +302,6 @@ class LightllmSchedulerConfig(BaseReplicaSchedulerConfig):
 
 @dataclass
 class OrcaSchedulerConfig(BaseReplicaSchedulerConfig):
-
     @staticmethod
     def get_type():
         return ReplicaSchedulerType.ORCA
@@ -310,7 +309,6 @@ class OrcaSchedulerConfig(BaseReplicaSchedulerConfig):
 
 @dataclass
 class FasterTransformerSchedulerConfig(BaseReplicaSchedulerConfig):
-
     @staticmethod
     def get_type():
         return ReplicaSchedulerType.FASTER_TRANSFORMER
@@ -328,6 +326,7 @@ class SarathiSchedulerConfig(BaseReplicaSchedulerConfig):
         return ReplicaSchedulerType.SARATHI
 
 
+# 具体的执行策略的参数
 @dataclass
 class MetricsConfig:
     """Metric configuration."""
@@ -434,6 +433,7 @@ class ReplicaConfig:
         default=0.1,
         metadata={"help": "Memory margin fraction."},
     )
+    # 在pipeline中，模型被拆分为多少个阶段运行
     num_pipeline_stages: int = field(
         default=1,
         metadata={"help": "Number of pipeline stages."},
@@ -492,18 +492,22 @@ class LORGlobalSchedulerConfig(BaseGlobalSchedulerConfig):
 
 @dataclass
 class BaseExecutionTimePredictorConfig(BasePolyConfig):
+    # 记录了模型对应的MLP的相关参数
     compute_input_file: str = field(
         default="./data/profiling/compute/{DEVICE}/{MODEL}/mlp.csv",
         metadata={"help": "Path to the compute input file."},
     )
+    # 记录了模型对应的Attention的相关参数
     attention_input_file: str = field(
         default="./data/profiling/compute/{DEVICE}/{MODEL}/attention.csv",
         metadata={"help": "Path to the attention input file."},
     )
+    # reduce通信相关的数据
     all_reduce_input_file: str = field(
         default="./data/profiling/network/{NETWORK_DEVICE}/all_reduce.csv",
         metadata={"help": "Path to the all reduce input file."},
     )
+    # send-recv通信相关的数据
     send_recv_input_file: str = field(
         default="./data/profiling/network/{NETWORK_DEVICE}/send_recv.csv",
         metadata={"help": "Path to the send recv input file."},
@@ -625,6 +629,7 @@ class ClusterConfig:
 
 @dataclass
 class SimulationConfig(ABC):
+    # field函数用于定义类的属性，提供相应的说明和提示
     seed: int = field(
         default=42,
         metadata={"help": "Seed for the random number generator."},
@@ -645,6 +650,7 @@ class SimulationConfig(ABC):
         default_factory=SyntheticRequestGeneratorConfig,
         metadata={"help": "Request generator config."},
     )
+    # 执行时间估计
     execution_time_predictor_config: BaseExecutionTimePredictorConfig = field(
         default_factory=RandomForrestExecutionTimePredictorConfig,
         metadata={"help": "Execution time predictor config."},

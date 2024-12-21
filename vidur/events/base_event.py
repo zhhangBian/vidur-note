@@ -44,6 +44,7 @@ class BaseEvent(ABC):
     def _get_priority_number(self):
         return (self._time, self._id, self.event_type)
 
+    # 比较关系，相应的顺序为time->type->id
     def __lt__(self, other):
         if self._time == other._time:
             if self._event_type == other._event_type:

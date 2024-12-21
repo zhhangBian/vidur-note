@@ -21,6 +21,7 @@ class ReplicaSchedulerRegistry(BaseRegistry):
     pass
 
 
+# 按照论文，选择外部的接口进行调度
 ReplicaSchedulerRegistry.register(
     ReplicaSchedulerType.FASTER_TRANSFORMER, FasterTransformerReplicaScheduler
 )
