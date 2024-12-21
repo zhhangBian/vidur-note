@@ -142,6 +142,7 @@ class SklearnExecutionTimePredictor(BaseExecutionTimePredictor):
 
     def _load_attention_df(self, file_path: str) -> pd.DataFrame:
         df = pd.read_csv(file_path)
+        print(f"[debug] file path is {file_path}")
         df = df.drop_duplicates()
 
         for column in [
@@ -342,6 +343,7 @@ class SklearnExecutionTimePredictor(BaseExecutionTimePredictor):
         target_col: str,
     ) -> BaseEstimator:
         if len(df) == 0:
+            print(f"[debug] Training data for model {model_name} is empty")
             raise Exception(f"Training data for model {model_name} is empty")
 
         model_hash = self._get_model_hash(model_name, df)
